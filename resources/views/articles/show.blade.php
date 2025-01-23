@@ -8,10 +8,10 @@
             <h6 class="my-4">Written by: {{$article->user->name}}</h6>
             @auth
 
-            @if (Auth::user()->id == $article->user_id)
+            @can ('update', $article)
             <a href="{{route('articles.edit',$article->id)}}" class="btn btn-warning">Edit</a>
             <a href="{{route('articles.destroy',$article->id)}}" class="btn btn-danger">Delete</a>
-            @endif
+            @endcan
 
             @endauth
 

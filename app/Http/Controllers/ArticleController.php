@@ -76,9 +76,7 @@ class ArticleController extends Controller
     public function edit(Article $article)
     {
 
-        if(Auth::user()->id != $article->user_id){
-            return redirect(route('home'))->withErrors('Not authorized');
-        }
+        Gate::authorize('edit',$article);
 
         return view('articles.edit',compact('article'));
     }
@@ -88,9 +86,7 @@ class ArticleController extends Controller
 
         $articleData = $request->all();
 
-        if(Auth::id() !== $article->user_id){
-                return redirect(route('articles.show',$article->id))->withErrors('Not autorized');
-            }
+        Gate::authorize('update',$article);
 
         $articleData['content'] = $htmlFilterService->filterHtml($articleData['content']);
 
@@ -103,9 +99,7 @@ class ArticleController extends Controller
     public function destroy(Article $article, Request $request)
     {
 
-        if(Auth::user()->id != $article->user_id){
-            return redirect(route('profile'))->withErrors('Not authorized');
-        }
+        Gate::authorize('delete',$article);
 
         $article->delete();
 
